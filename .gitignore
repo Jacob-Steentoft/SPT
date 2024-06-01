@@ -5,7 +5,9 @@
 !.gitignore
 !user/mods/**/*
 !BepInEx/plugins/**/*
+
 # etc...
 
 # ...even if they are in subdirectories
 !*/
+**/log/*
