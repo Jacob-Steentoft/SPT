@@ -1,0 +1,102 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConfigSchema = void 0;
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
+class ConfigSchema {
+    /* eslint-disable @typescript-eslint/naming-convention */
+    static schema = {
+        $schema: "http://json-schema.org/draft-07/schema#",
+        type: "object",
+        properties: {
+            general: {
+                type: "object",
+                properties: {
+                    enabled: { type: "boolean" },
+                    debug: { type: "boolean" },
+                },
+                required: ["enabled", "debug"],
+            },
+            raidTimes: {
+                type: "object",
+                properties: {
+                    overrideAll: { type: "boolean" },
+                    override: {
+                        oneOf: [
+                            { type: "integer" },
+                            {
+                                type: "array",
+                                items: { $ref: "#/definitions/timeWeight" },
+                            },
+                        ],
+                    },
+                    customTimes: {
+                        type: "object",
+                        additionalProperties: {
+                            oneOf: [
+                                { type: "integer" },
+                                {
+                                    type: "array",
+                                    items: { $ref: "#/definitions/timeWeight" },
+                                },
+                            ],
+                        },
+                    },
+                },
+                required: ["overrideAll", "override", "customTimes"],
+            },
+            trainSchedule: {
+                type: "object",
+                properties: {
+                    auto: { type: "boolean" },
+                    static: {
+                        type: "object",
+                        properties: {
+                            arriveEarliestMinutes: { type: "integer" },
+                            arriveLatestMinutes: { type: "integer" },
+                            trainWaitSeconds: { type: "integer" },
+                        },
+                        required: ["arriveEarliestMinutes", "arriveLatestMinutes", "trainWaitSeconds"],
+                    },
+                },
+                required: ["auto", "static"],
+            },
+        },
+        required: ["general", "raidTimes", "trainSchedule"],
+        definitions: {
+            timeWeight: {
+                type: "object",
+                properties: {
+                    minutes: {
+                        oneOf: [
+                            { type: "integer" },
+                            {
+                                type: "object",
+                                properties: {
+                                    min: { type: "integer" },
+                                    max: { type: "integer" },
+                                },
+                                required: ["min", "max"],
+                            },
+                        ],
+                    },
+                    weight: {
+                        oneOf: [
+                            { type: "integer" },
+                            {
+                                type: "object",
+                                properties: {
+                                    min: { type: "integer" },
+                                    max: { type: "integer" },
+                                },
+                                required: ["min", "max"],
+                            },
+                        ],
+                    },
+                },
+                required: ["minutes", "weight"],
+            },
+        },
+    };
+}
+exports.ConfigSchema = ConfigSchema;
+//# sourceMappingURL=ConfigSchema.js.map
